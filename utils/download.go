@@ -195,72 +195,72 @@ func DownloadTest(url string, session *webdriver.Session) []WeChatList {
 
 			// 采集文章列表
 			articleLists := make([]ArticleList, 0)
-			wh, _ := session.WindowHandle()
-			whs, _ := session.WindowHandles()
-			for _, v := range whs {
-				if wh.ID != v.ID {
-					session.FocusOnWindow(v.ID)
-					div, _ := session.FindElement(webdriver.ClassName, "weui_msg_card_list")
-					infos, _ := div.FindElements(webdriver.ClassName, "weui_msg_card")
-					if len(infos) > 0 {
-						for _, info := range infos {
-							// date, _ := info.FindElement(webdriver.ClassName, "weui_msg_card_hd")
-							titles, _ := info.FindElements(webdriver.ClassName, "weui_media_title")
-							descs, _ := info.FindElements(webdriver.ClassName, "weui_media_desc")
-							infos, _ := info.FindElements(webdriver.ClassName, "weui_media_extra_info")
-							urls, _ := info.FindElements(webdriver.TagName, "h4")
-							if len(titles) > 0 {
-								for i := 0; i < len(titles); i++ {
-									articleList := NewArticleList()
-									t, _ := titles[i].Text()
-									d, _ := descs[i].Text()
-									in, _ := infos[i].Text()
-									u, _ := urls[i].GetAttribute("hrefs")
-									url := "http://mp.weixin.qq.com" + u
-									titles[i].Click()
-									// 采集文章
-									wh, _ := session.WindowHandle()
-									whs, _ := session.WindowHandles()
-									articleContent := NewArticleContent()
-									// log.Println("窗口个数：\t", len(whs))
-									for _, v := range whs {
-										if wh.ID != v.ID {
-											session.FocusOnWindow(v.ID)
-											title, err := session.FindElement(webdriver.ID, "activity-name")
-											if err == nil {
-												t, _ := title.Text()
+			// wh, _ := session.WindowHandle()
+			// whs, _ := session.WindowHandles()
+			// for _, v := range whs {
+			// 	if wh.ID != v.ID {
+			// 		session.FocusOnWindow(v.ID)
+			// 		div, _ := session.FindElement(webdriver.ClassName, "weui_msg_card_list")
+			// 		cards, _ := div.FindElements(webdriver.ClassName, "weui_msg_card")
+			// 		if len(cards) > 0 {
+			// 			for _, info := range cards {
+			// 				// date, _ := info.FindElement(webdriver.ClassName, "weui_msg_card_hd")
+			// 				titles, _ := info.FindElements(webdriver.ClassName, "weui_media_title")
+			// 				descs, _ := info.FindElements(webdriver.ClassName, "weui_media_desc")
+			// 				infos, _ := info.FindElements(webdriver.ClassName, "weui_media_extra_info")
+			// 				urls, _ := info.FindElements(webdriver.TagName, "h4")
+			// 				if len(titles) > 0 {
+			// 					for i := 0; i < len(titles); i++ {
+			// 						articleList := NewArticleList()
+			// 						t, _ := titles[i].Text()
+			// 						d, _ := descs[i].Text()
+			// 						in, _ := infos[i].Text()
+			// 						u, _ := urls[i].GetAttribute("hrefs")
+			// 						url := "http://mp.weixin.qq.com" + u
+			// 						titles[i].Click()
+			// 						// 采集文章
+			// 						wh, _ := session.WindowHandle()
+			// 						whs, _ := session.WindowHandles()
+			// 						articleContent := NewArticleContent()
+			// 						// log.Println("窗口个数：\t", len(whs))
+			// 						for _, v := range whs {
+			// 							if wh.ID != v.ID {
+			// 								session.FocusOnWindow(v.ID)
+			// 								title, err := session.FindElement(webdriver.ID, "activity-name")
+			// 								if err == nil {
+			// 									t, _ := title.Text()
 
-												postDate, _ := session.FindElement(webdriver.ID, "post-date")
-												date, _ := postDate.Text()
+			// 									postDate, _ := session.FindElement(webdriver.ID, "post-date")
+			// 									date, _ := postDate.Text()
 
-												imgContent, _ := session.FindElement(webdriver.ID, "img-content")
-												content, _ := imgContent.Text()
+			// 									imgContent, _ := session.FindElement(webdriver.ID, "img-content")
+			// 									content, _ := imgContent.Text()
 
-												articleContent.articleTitle = t
-												articleContent.articleDate = date
-												articleContent.articleContent = content
-												articleContent.articleUrl = url
-											}
-											// session.CloseCurrentWindow()
-											session.Back()
-											session.FocusOnWindow(wh.ID)
-										}
-									}
+			// 									articleContent.articleTitle = t
+			// 									articleContent.articleDate = date
+			// 									articleContent.articleContent = content
+			// 									articleContent.articleUrl = url
+			// 								}
+			// 								// session.CloseCurrentWindow()
+			// 								session.Back()
+			// 								session.FocusOnWindow(wh.ID)
+			// 							}
+			// 						}
 
-									articleList.title = t
-									articleList.desc = d
-									articleList.date = in
-									articleList.url = url
-									articleList.articleContent = *articleContent
-									articleLists = append(articleLists, *articleList)
-								}
-							}
-						}
-					}
-					session.CloseCurrentWindow()
-					session.FocusOnWindow(wh.ID)
-				}
-			}
+			// 						articleList.title = t
+			// 						articleList.desc = d
+			// 						articleList.date = in
+			// 						articleList.url = url
+			// 						articleList.articleContent = *articleContent
+			// 						articleLists = append(articleLists, *articleList)
+			// 					}
+			// 				}
+			// 			}
+			// 		}
+			// 		session.CloseCurrentWindow()
+			// 		session.FocusOnWindow(wh.ID)
+			// 	}
+			// }
 
 			result := NewWeChatList()
 			result.wechatUrl = wechatUrl
